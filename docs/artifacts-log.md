@@ -128,7 +128,16 @@ the actual skill.
   computer-object descriptions** (`CA01 - Enterprise Root CA`, `FS01 - File Services / DR`) —
   centrally queryable via `Get-ADComputer -Properties Description`, no rename churn.
 
-_Screenshots: `pki-enterprise-root-ca-live.png`, `ad-computers-role-descriptions.png`._
+![Enterprise Root CA operational](images/pki-enterprise-root-ca-live.png)
+*`certutil -CAInfo` + the CA console: `Forestova-Root-CA` running, CA type 0 (Enterprise Root), CA cert
+and CRL valid, templates published — operational, not just installed.*
+
+![Member servers joined to corp.forestova.local](images/members-joined-corp-domain.png)
+*Both member servers joined the domain — "Welcome to the corp domain."*
+
+![AD computer objects with role descriptions](images/ad-computers-role-descriptions.png)
+*Roles encoded as AD computer-object descriptions (centrally queryable) instead of renaming hostnames —
+managed over RDP to the DC.*
 
 ## 5. Ansible fleet — control node + idempotent hardening
 
@@ -165,7 +174,16 @@ that matter most:
   runs; the fully-unattended pattern is key-only SSH + `NOPASSWD` sudo (no password anywhere, trust
   held in the key).
 
-_Screenshots: `ansible-fleet-ping.png`, `ansible-idempotency-changed3-to-changed0.png`._
+![Ansible fleet ping — two pongs](images/ansible-fleet-ping.png)
+*`ansible fleet -m ping` → both nodes `SUCCESS` / `pong`: the control node reaches the entire fleet over
+key-based SSH. The fleet is alive.*
+
+![Hardening playbook run 1 — changed=3, handler fires](images/ansible-harden-run1-changed.png)
+*Run 1: `changed=3`, and `RUNNING HANDLER [Restart ssh]` fires — ssh restarts only because a task changed.*
+
+![Idempotency: changed=3 then changed=0](images/ansible-idempotency-changed3-to-changed0.png)
+*The same playbook run twice: `changed=3` → `changed=0`, handler silent the second time (`ok` drops 5→4).
+Desired-state config, not a script — safe to run a thousand times.*
 
 ### Ops scripts (`scripts/`)
 - `fleet-up.ps1` — boots the DC then the 3 Ubuntu nodes **headless** (managed entirely over SSH).
