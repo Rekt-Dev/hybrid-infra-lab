@@ -84,6 +84,10 @@ Import-Module WebAdministration
 Fresh browser tab → **green padlock, connection secure.**
 ![Padlock — connection secure](screenshots/08-browser-padlock-secure.png)
 
+Verified from a **separate domain member** (`.112`) — the same URL now shows secure, confirming the
+Enterprise Root CA is trusted domain-wide (before/after with the earlier "Not secure" from the same host).
+![Secure from member .112](screenshots/08b-browser-padlock-from-member-112.png)
+
 ---
 
 ## What this demonstrates
