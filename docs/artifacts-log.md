@@ -189,4 +189,37 @@ Desired-state config, not a script — safe to run a thousand times.*
 - `fleet-up.ps1` — boots the DC then the 3 Ubuntu nodes **headless** (managed entirely over SSH).
 - `fleet-down.ps1` — graceful ACPI shutdown, fleet first then DC last.
 
-## 6. Intune MDM PoC (enroll a mobile device) — TODO
+## 6. PKI in action — issue & harden a TLS cert (Windows CA → IIS)
+
+Built on §4's Enterprise Root CA: issued a real **Web Server TLS certificate** from `Forestova-Root-CA`,
+bound it to **IIS** on `DC01`, hit the classic **"Not secure" / missing-SAN** failure, diagnosed it
+(enrollment context + browsers validating the **SAN** not the CN), and re-issued **with a SAN via
+`certreq`** → green padlock, trusted domain-wide (verified from member `.112`).
+
+→ Full write-up + screenshots: [`windows/pki/`](../windows/pki/README.md)
+
+## 7. Group Policy — CIS-aligned Chrome hardening via ADMX
+
+Loaded the **Chrome ADMX** into the domain **Central Store** (SYSVOL), authored a GPO
+(`Chrome-Hardening-CIS`: block all extensions, enhanced Safe Browsing, disable incognito + browser
+password saving), targeted it via a **`LabServers` OU**, and validated end-to-end on member `.113`
+(registry + `chrome://policy`) — including catching and fixing a **blocklist-vs-allowlist** misconfig.
+Includes a **standalone `.reg`** equivalent (same settings, no domain).
+
+→ Full write-up + screenshots: [`windows/gpo/`](../windows/gpo/README.md) · [`windows/gpo/standalone-reg/`](../windows/gpo/standalone-reg/README.md)
+
+## 8. Ansible — idempotency + handler demo (re-run 2026-08-02)
+
+Re-demonstrated the fleet SSH-hardening play with a clean **drift → correct → converge** arc
+(`changed=2 → changed=0`) and proved the ssh-restart **handler fires only on change**.
+
+→ Full write-up + screenshots: [`ansible/`](../ansible/README.md)
+
+## 9. Intune MDM PoC (UEM / mobile device management) — in progress
+
+Stood up a **Microsoft Intune** trial tenant (`ofear.onmicrosoft.com`), confirmed **MDM authority =
+Microsoft Intune**, licensed the admin, and authored an Android **compliance policy** +
+**configuration profile**. **Device enrollment pending** (Managed Google Play hit Google's temporary
+anti-abuse throttle — retry).
+
+→ Write-up + screenshots: [`windows/intune/`](../windows/intune/README.md)
