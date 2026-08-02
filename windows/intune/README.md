@@ -14,6 +14,8 @@ management** side.
 - **MDM authority:** Microsoft Intune (default)
 - **MFA:** enforced on admin sign-in (Microsoft Authenticator)
 
+![Intune admin center — tenant live, service healthy, account active](screenshots/01-intune-dashboard.png)
+
 ## Done
 1. **Created the Intune tenant** via the Intune Plan 1 trial; assigned an Intune license to the admin user.
 2. **Confirmed MDM authority = Microsoft Intune** (Tenant administration → Tenant status).
