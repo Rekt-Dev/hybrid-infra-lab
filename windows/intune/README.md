@@ -38,12 +38,12 @@ management** side.
 - **Verify on device + in console:** work profile present, restrictions enforced (screenshot blocked,
   copy/paste blocked), device shows **Compliant** and config profile **Succeeded** in the admin center.
 
-## MDM concepts demonstrated / talking points
+## MDM concepts demonstrated
 - **UEM vs. servers:** Intune/UEM manages end-user endpoints (mobile, tablet, laptop, any OS) — **not**
   servers; Linux servers are config-managed with Ansible. Different tools, different jobs.
 - **MFA vs. enrollment:** MFA verifies the *user's identity*; enrollment brings the *device* under
   management. Separate layers.
 - **Compliance vs. configuration:** a compliance policy defines what makes a device "healthy"; a
   configuration profile pushes the actual settings/restrictions.
-- **Bridge to MaaS360:** same UEM model — directory integration, compliance and
-  configuration policies, conditional access — implemented here on the Microsoft stack.
+- **Relation to IBM MaaS360:** same UEM model — directory integration, compliance and configuration
+  policies, conditional access — implemented here on the Microsoft stack.

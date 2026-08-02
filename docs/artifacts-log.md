@@ -166,7 +166,7 @@ that matter most:
 - **Run 2 (identical command):** `changed=0`, **no handler section** (`ok` drops 5→4 because the
   handler is no longer even counted). Reality already matches desired state → safe no-op.
 
-> **Talking point:** Ansible is desired-state, not a script. First run converges the fleet to
+> **Why it matters:** Ansible is desired-state, not a script. First run converges the fleet to
 > key-only SSH; second run makes zero changes because nothing drifted. That's idempotency plus
 > notify/handler mechanics — safe to run a thousand times.
 

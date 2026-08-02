@@ -11,7 +11,7 @@ nodes, and demonstrate the two properties that make Ansible safe at scale — **
   `PasswordAuthentication no`, validate `sshd -t`, and **restart ssh via a handler only if something changed**
 - Control node: `UbuntuSvr` (192.168.1.114)
 
-## Plain-English cheat sheet
+## Command reference (plain English)
 | Command | What it does |
 |---|---|
 | `ansible fleet -m ping` | "Servers, you alive?" → `pong` |
