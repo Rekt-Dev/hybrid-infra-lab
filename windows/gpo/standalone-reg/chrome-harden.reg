@@ -1,0 +1,13 @@
+Windows Registry Editor Version 5.00
+
+; CIS-aligned Chrome hardening for a STANDALONE (non-domain) machine.
+; Same registry keys the GPO writes on domain machines (HKLM\SOFTWARE\Policies\Google\Chrome).
+; Apply: double-click and merge, or  regedit /s chrome-harden.reg
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome]
+"IncognitoModeAvailability"=dword:00000001
+"SafeBrowsingProtectionLevel"=dword:00000002
+"PasswordManagerEnabled"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\ExtensionInstallBlocklist]
+"1"="*"
