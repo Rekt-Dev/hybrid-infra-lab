@@ -1,0 +1,42 @@
+---
+# Re-harden SSH across the fleet: undo the bootstrap password-auth override
+# and enforce key-only login. This is the "desired state" the golden image's
+# hardening always intended — the temp override was only to distribute keys.
+#
+# Demonstrates: idempotency (first run changes, second run is green/no-op) and
+# handlers (ssh restarts ONLY when a task actually changes something).
+#
+# Run:  ansible-playbook playbooks/harden-ssh.yml
+
+- name: Enforce key-only SSH on the fleet
+  hosts: fleet
+  become: true
+
+  tasks:
+    - name: Remove bootstrap password-auth override (99-temp.conf)
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.d/99-temp.conf
+        state: absent
+      notify: Restart ssh
+
+    - name: Ensure PasswordAuthentication is disabled (hardening drop-in)
+      ansible.builtin.copy:
+        dest: /etc/ssh/sshd_config.d/60-hardening.conf
+        content: |
+          # Managed by Ansible — key-only SSH
+          PasswordAuthentication no
+          KbdInteractiveAuthentication no
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart ssh
+
+    - name: Validate sshd config before we rely on the handler
+      ansible.builtin.command: sshd -t
+      changed_when: false
+
+  handlers:
+    - name: Restart ssh
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
